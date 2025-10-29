@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+<body style="text-align:center; background-color:#faf0e6;">
+<h2>Search Results</h2>
+
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<div th:if="${accounts}">
+    <table border="1" style="margin: 0 auto;">
+        <tr>
+            <th>Account Number</th>
+            <th>Customer Name</th>
+            <th>Balance</th>
+        </tr>
+        <tr th:each="account : ${accounts}">
+            <td th:text="${account.accountNumber}"></td>
+            <td th:text="${account.customerName}"></td>
+            <td th:text="${account.balance}"></td>
+        </tr>
+    </table>
+</div>
+
+<br>
+<a href="/account/search">🔙 Back to Search</a>
+</body>
+</html>

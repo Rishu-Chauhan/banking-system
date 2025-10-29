@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Account List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #dceefb, #f0f2f5);
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            color: #2575fc;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .table thead {
+            background-color: #2575fc;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            color: black;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .search-box {
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            background: #fff;
+        }
+        .footer-buttons a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">🏦 Bank Account Management System</h2>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <strong th:text="${errorMessage}"></strong>
+    </div>
+
+    <!-- 🔍 Search Form -->
+    <form class="row g-3 mb-4 search-box" th:action="@{/account/list}" method="get">
+        <div class="col-md-5">
+            <input type="text" name="search" class="form-control"
+                   placeholder="🔍 Search by Customer Name" th:value="${search}">
+        </div>
+        <div class="col-md-5">
+            <input type="text" name="accountNumber" class="form-control"
+                   placeholder="🔢 Search by Account Number" th:value="${accountNumber}">
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
+    <!-- ⚠️ Message -->
+    <div th:if="${message}" class="alert alert-warning text-center" th:text="${message}"></div>
+
+    <!-- 📋 Account Table -->
+    <table class="table table-bordered table-striped table-hover text-center">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Account Number</th>
+            <th>Customer Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Account Type</th>
+            <th>Balance (₹)</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="acc : ${accounts}" th:if="${acc.customer != null}">
+            <td th:text="${acc.id}"></td>
+            <td th:text="${acc.accountNumber}"></td>
+            <td th:text="${acc.customer.name}"></td>
+            <td th:text="${acc.customer.email}"></td>
+            <td th:text="${acc.customer.phone}"></td>
+            <td th:text="${acc.accountType}"></td>
+            <td th:text="${acc.balance}"></td>
+            <td th:text="${acc.status}"></td>
+            <td class="text-center">
+                <a th:href="@{'/account/deposit/' + ${acc.accountNumber}}" class="btn btn-success btn-sm me-1">💰 Deposit</a>
+                <a th:href="@{'/account/withdraw/' + ${acc.accountNumber}}" class="btn btn-danger btn-sm me-1">💸 Withdraw</a>
+                <a th:href="@{/account/transfer}" class="btn btn-warning btn-sm">🔁 Transfer</a>
+                <a th:href="@{'/account/close/' + ${acc.id}}" th:if="${acc.status == 'ACTIVE'}"   class="btn btn-primary btn-sm">Close</a>
+                <span th:if="${acc.status == 'CLOSED'}" style="color: red;">Closed</span>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 🎛 Footer Buttons -->
+    <div class="text-center mt-4 footer-buttons">
+        <a th:href="@{/account/transactions}" class="btn btn-success me-3">💰 Show All Transactions</a>
+        <a href="/account/open" class="btn btn-primary me-3">+ Open New Account</a>
+        <a href="/account/list" class="btn btn-secondary me-3">🔄 Clear Search</a>
+        <a href="/" class="btn btn-outline-dark">🏠 Home</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

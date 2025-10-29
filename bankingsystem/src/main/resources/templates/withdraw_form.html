@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Withdraw Money</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">Withdraw Money</h2>
+
+    <!-- Display messages or errors -->
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form th:action="@{/account/withdraw}" method="post">
+        <div class="mb-4">
+            <label for="accNo" class="form-label">Account Number</label>
+            <input type="text" name="accNo" id="accNo" class="form-control" placeholder="Enter account number" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="amount" class="form-label">Amount (₹)</label>
+            <input type="number" name="amount" id="amount" class="form-control" placeholder="Enter amount" min="1" required>
+        </div>
+
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn btn-primary">Withdraw</button>
+            <a href="/account/list" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>
